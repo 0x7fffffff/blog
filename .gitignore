@@ -24,3 +24,5 @@ erl_crash.dump
 /config/
 /config/prod.secret.exs
 /config/prod.exs
+
+priv/repo/seeds.exs
