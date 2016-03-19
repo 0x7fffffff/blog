@@ -1,6 +1,6 @@
 <h2>Listing posts</h2>
 
-<table class="table">
+<!-- <table class="table">
   <thead>
     <tr>
       <th>Title</th>
@@ -10,19 +10,54 @@
     </tr>
   </thead>
   <tbody>
-<%= for post <- @posts do %>
-    <tr>
-      <td><%= post.title %></td>
-      <td><%= post.body %></td>
 
-      <td class="text-right">
-        <%= link "Show", to: user_post_path(@conn, :show, @user, post), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: user_post_path(@conn, :edit, @user, post), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: user_post_path(@conn, :delete, @user, post), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
-    </tr>
-<% end %>
   </tbody>
-</table>
+</table> -->
+<%# link "Show", to: user_post_path(@conn, :show, @user, post),
+class: "btn btn-default btn-xs" %>
 
-<%= link "New post", to: user_post_path(@conn, :new, @user) %>
+<div class="collection">
+<%= for post <- @posts do %>
+    <%# link to: user_path(@conn, :show, user) do %>
+      <%# user.username %>
+    <%# end %>
+
+    <%= link "Show", to: user_post_path(@conn, :show, @user, post), class: "collection-item" %>
+
+      <div class="collection-item">
+      <%# link to: user_post_path(@conn, :show, @user, post), class: "collection-item" %>
+        <% post.title %>
+      <%# end %>
+    </div>
+      <!-- <td><%# markdown(post.body) %></td> -->
+
+        <%# link "Edit", to: user_post_path(@conn, :edit, @user, post), class: "btn btn-default btn-xs" %>
+        <%# link "Delete", to: user_post_path(@conn, :delete, @user, post), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+
+
+<% end %>
+</div>
+
+<%= link "New post", to: user_post_path(@conn, :new, @user), class: "collection-item" %>
+
+<!-- <div class="collection">
+  <a href="#!" class="collection-item">
+    <p>fasdf</p><p>fsdkfmsdkflsmdfgsdf</p>
+  </a>
+  <a href="#!" class="collection-item">Alvin</a>
+  <a href="#!" class="collection-item">Alvin</a>
+  <a href="#!" class="collection-item">Alvin</a>
+</div>
+
+<div class="collection">
+  <a class="collection-item">
+    <div class="collection-item avatar">
+      <i class="material-icons circle">folder</i>
+      <span class="title">Title</span>
+      <p>First Line <br>
+         Second Line
+      </p>
+      <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+    </div>
+  </a>
+</div> -->

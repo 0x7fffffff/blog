@@ -13,7 +13,7 @@ defmodule Pxblog.PostController do
   end
 
   def new(conn, _params) do
-    changeset = 
+    changeset =
       conn.assigns[:user]
       |> build_assoc(:posts)
       |> Post.changeset()
@@ -21,7 +21,7 @@ defmodule Pxblog.PostController do
   end
 
   def create(conn, %{"post" => post_params}) do
-    changeset = 
+    changeset =
       conn.assigns[:user]
       |> build_assoc(:posts)
       |> Post.changeset(post_params)
@@ -50,7 +50,6 @@ defmodule Pxblog.PostController do
   def update(conn, %{"id" => id, "post" => post_params}) do
     post = Repo.get!(assoc(conn.assigns[:user], :posts), id)
     changeset = Post.changeset(post, post_params)
-
     case Repo.update(changeset) do
       {:ok, post} ->
         conn
@@ -91,14 +90,13 @@ defmodule Pxblog.PostController do
     |> halt
   end
 
-  defp authorize_user(conn, _opts) do
+  defp authorize_user(conn, _) do
     user = get_session(conn, :current_user)
-
-    if user && Integer.to_string(user.id) == conn.params["user_id"] do
+    if user && (Integer.to_string(user.id) == conn.params["id"] || Pxblog.RoleChecker.is_admin?(user)) do
       conn
     else
       conn
-      |> put_flash(:error, "You are not authorized to modify that post!")
+      |> put_flash(:error, "You are not authorized to modify that user!")
       |> redirect(to: page_path(conn, :index))
       |> halt()
     end

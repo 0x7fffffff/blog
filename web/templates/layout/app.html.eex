@@ -1,52 +1,6 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Hello, World</title>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-  </head>
-
-  <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li>
-              <%= if user = current_user(@conn) do %>
-                Logged in as
-                <strong><%= user.username %></strong>
-                <br>
-                <%= link "Log out", to: session_path(@conn, :delete, user.id), method: :delete %>
-              <% else %>
-                <%= link "Log in", to: session_path(@conn, :new) %>
-              <% end %>
-            </li>
-          </ul>
-        </nav>
-        <span class="logo"></span>
-      </header>
-
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
-
-    </div>
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-  </body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Meta Data -->
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -56,18 +10,35 @@
   <title>Starter Template - Materialize</title>
 
   <!-- CSS  -->
-  <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="<%= static_path(@conn, "/css/materialize.min.css") %>" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="<%= static_path(@conn, "/css/materialize.css") %>" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+  <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+  <link rel="stylesheet" href="<%= static_path(@conn, "/css/style.css") %>">
 </head>
 <body>
   <!-- Dropdown Structure -->
   <%= if user = current_user(@conn) do %>
   <ul id="account-drop-down" class="dropdown-content">
     <li><%= link "My Profile", to: user_path(@conn, :show, user.id) %></li>
-    <li><a href="#!">My Posts</a></li>
-    <!-- <li class="divider"></li> -->
-    <li><%= link "Log out", to: session_path(@conn, :delete, user.id), method: :delete, data: [confirm: "Are you sure?"] %></li>
+
+    <li>
+      <%= link to: user_post_path(@conn, :index, user.id) do %>
+        My Posts
+      <%= end %>
+    </li>
+
+    <li class="divider"></li>
+
+    <li>
+      <%# link to: user_path(@conn, :show, user) do %>
+        <%# user.username %>
+      <%# end %>
+      <%= link to: session_path(@conn, :delete, user.id), method: :delete, data: [confirm: "Are you sure?"] do %>
+        Log Out
+      <%= end %>
+      <%# link "Log Out", to: session_path(@conn, :delete, user.id), method: :delete, data: [confirm: "Are you sure?"] %>
+    </li>
   </ul>
   <% else %>
   <ul id="login-drop-down" class="dropdown-content">
@@ -77,57 +48,30 @@
   <% end %>
 
   <nav class="blue lighten-1" role="navigation">
-  <div class="nav-wrapper container">
-    <a href="/" class="brand-logo">0x7fs</a>
-    <ul class="right hide-on-med-and-down">
-      <!-- <li><a href="sass.html"><i class="material-icons">search</i></a></li>
-      <li><a href="badges.html"><i class="material-icons">view_module</i></a></li>
-      <li><a href="collapsible.html"><i class="material-icons">refresh</i></a></li>
-      <li><a href="mobile.html"><i class="material-icons">more_vert</i></a></li> -->
-
-      <%= if user = current_user(@conn) do %>
-      <li><a class="dropdown-button" href="#!" data-activates="account-drop-down"><%= user.username %><i class="material-icons right">arrow_drop_down</i></a></li>
-        <!-- Logged in as
-        <strong><%= user.username %></strong>
-        <br>
-         -->
-      <% else %>
-      <li><a class="dropdown-button" href="#!" data-activates="login-drop-down">Log In<i class="material-icons right">arrow_drop_down</i></a></li>
-        <!-- <%= link "Log in", to: session_path(@conn, :new) %> -->
-      <% end %>
-
-    </ul>
-
-    <ul id="nav-mobile" class="side-nav">
-      <li><a href="#">Navbar Link 1</a></li>
-      <li><a href="#">Navbar Link 2</a></li>
-    </ul>
-  </div>
-  </nav>
-  <!-- <nav>
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
+    <div class="nav-wrapper container">
+      <a href="/" class="brand-logo">0x7fs</a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#">Navbar Link</a></li>
+        <%= if user = current_user(@conn) do %>
+        <li>
+          <a class="dropdown-button" href="#!" data-activates="account-drop-down">
+            <%= user.username %><i class="material-icons right">arrow_drop_down</i>
+          </a>
+        </li>
+        <% else %>
+        <li>
+          <a class="dropdown-button" href="#!" data-activates="login-drop-down">
+            Log In<i class="material-icons right">arrow_drop_down</i>
+          </a>
+        </li>
+        <% end %>
       </ul>
 
-      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#">Navbar Link 1</a></li>
+        <li><a href="#">Navbar Link 2</a></li>
+      </ul>
     </div>
-  </nav> -->
-  <!-- <div class="section no-pad-bot" id="index-banner">
-    <div class="container">
-      <br><br>
-      <h1 class="header center orange-text">Starter Template</h1>
-      <div class="row center">
-        <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
-      </div>
-      <div class="row center">
-        <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>
-      </div>
-      <br><br>
-
-    </div>
-  </div> -->
-
+  </nav>
 
   <div class="container">
     <main role="main">
@@ -136,14 +80,13 @@
   </div>
 
   <footer class="page-footer blue">
-    <div class="container">
+    <!-- <div class="container">
       <div class="row">
         <div class="col l6 s12">
           <h5 class="white-text">Company Bio</h5>
           <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
-
-
         </div>
+
         <div class="col l3 s12">
           <h5 class="white-text">Settings</h5>
           <ul>
@@ -153,6 +96,7 @@
             <li><a class="white-text" href="#!">Link 4</a></li>
           </ul>
         </div>
+
         <div class="col l3 s12">
           <h5 class="white-text">Connect</h5>
           <ul>
@@ -163,14 +107,24 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="footer-copyright">
       <div class="container">
-      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+        <div class="row">
+          <div class="col">
+            Made with <a class="white-text text-lighten-3" href="https://materializecss.com">Materialize</a>
+          </div>
+
+          <div class="col">
+            Powered by <a class="white-text text-lighten-3" href="http://www.phoenixframework.org/">Phoenix</a>
+          </div>
+        </div>
+        © 2016 Copyright 0x7fs
+        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+
       </div>
     </div>
   </footer>
-
 
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -179,11 +133,11 @@
   <script>
   $(document).ready(function() {
     <%= if error = get_flash(@conn, :error) do %>
-    Materialize.toast(error, 4000);
+    Materialize.toast("<%= error %>", 4000);
     <% end %>
 
     <%= if info = get_flash(@conn, :info) do %>
-    Materialize.toast(info, 4000);
+    Materialize.toast("<%= info %>", 4000);
     <% end %>
   });
   </script>
